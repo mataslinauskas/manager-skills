@@ -6,7 +6,7 @@ They'll help you with getting buy-in, solving complex problems, giving feedback,
 
 Compiled from my experience building [Creo](https://joincreo.com) and coaching executives from the University of California, Coursera, Vinted and others.
 
-## Why use it?
+## Why use them?
 
 I've designed them to help you adopt the thinking of top managers.
 
