@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buy-in map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400&display=block" rel="stylesheet">
+<style>
+/* joincreo.com's look, light: the same fonts, greys and hairlines on an
+   off-white page. One accent, the Claude orange, and it only ever means
+   "this needs you": the question being answered now, or a missing piece. */
+:root{
+  --bg:#f7f7f5;
+  --card:#ffffff;
+  --ink:#0b0b0c;
+  --body:#2a2b2d;
+  --mute:#55575a;
+  --faint:#6e7071;
+  --ghost:#a3a5a7;
+  --edge:rgba(0,0,0,.09);
+  --hair:rgba(0,0,0,.07);
+  --claude:#D97757;
+  --ok:oklch(55% .12 150);
+  --serif:"Newsreader","Iowan Old Style",Georgia,serif;
+  --display:"Inter Tight","Inter",system-ui,sans-serif;
+  --sans:"Inter","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--body);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.page{max-width:1200px;margin:0 auto;padding:44px 40px 52px}
+
+/* header: the title lit from the top (inverted: near-black to grey), where the conversation is */
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+h1{font-family:var(--serif);font-weight:400;font-size:44px;line-height:1.05;letter-spacing:-.025em;
+  background-image:linear-gradient(180deg,#0b0b0c 0%,#5c5c5c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  padding-bottom:.16em;margin-bottom:-.16em}
+.now{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mute)}
+.now i{width:8px;height:8px;border-radius:50%;background:var(--claude)}
+.now svg{width:14px;height:14px;color:var(--ok)}
+.summary{margin-top:10px;font-size:16px;color:var(--mute)}
+.summary b{font-weight:500;color:var(--ink)}
+
+/* the ask, at the top of the tree */
+.ask{max-width:620px;margin:36px auto 0;background:var(--card);border:1px solid var(--edge);border-radius:18px;
+  padding:18px 20px 20px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.05)}
+.label{display:block;font-size:12.5px;color:var(--faint);margin-bottom:4px}
+.ask-t{font-family:var(--serif);font-size:25px;line-height:1.25;letter-spacing:-.01em;color:var(--ink);text-wrap:balance}
+
+/* the branches from the ask to each stakeholder */
+.tree{position:relative;height:44px}
+.tree svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tree path{fill:none;stroke:rgba(0,0,0,.16);stroke-width:1}
+
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.sh{background:var(--card);border:1px solid var(--edge);border-radius:18px;padding:18px 20px 6px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.05)}
+.sh-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.name{font-family:var(--display);font-weight:500;font-size:20px;letter-spacing:-.015em;color:var(--ink)}
+.role{display:block;font-size:13.5px;color:var(--mute);margin-top:3px}
+
+/* one word per state; a verdict is a grey word with a mark, never a coloured word */
+.st{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute);white-space:nowrap}
+.st .dot{width:7px;height:7px;border-radius:50%;background:var(--claude)}
+.st .ring{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--claude)}
+.st svg{width:13px;height:13px}
+.st.idle{color:var(--ghost)}
+
+.fields{margin-top:14px}
+.f{border-top:1px solid var(--hair);padding:12px 0 13px}
+.v{font-size:15px;line-height:1.45;color:var(--body)}
+.v.q{font-style:italic}
+.f.todo .label,.f.todo .v{color:var(--ghost)}
+.f.asking .v{color:var(--mute)}
+.f.asking .v::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--claude);margin-right:8px;vertical-align:1px}
+
+/* missing: asked, and you didn't have it. What it is, and why this person needs it */
+.f.missing{border-top:0;padding:0;margin:8px 0}
+.gap{border:1px dashed rgba(217,119,87,.7);border-radius:12px;padding:10px 12px 11px;background:rgba(217,119,87,.04)}
+.gap .label{color:var(--faint)}
+.gap .v{color:var(--ink)}
+.gap .v::before{content:"Missing: ";font-weight:600}
+.why{display:block;font-size:13.5px;line-height:1.4;color:var(--mute);margin-top:4px}
+
+/* the proof under each answer: how you know, or a missing box of its own */
+.pf{margin-top:6px;font-size:13.5px;line-height:1.45;color:var(--mute)}
+.pf .pl{color:var(--faint)}
+.pf .q{font-style:italic}
+.pf.todo,.pf.todo .pl{color:var(--ghost)}
+.pf.asking::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;border:1.5px solid var(--claude);margin-right:7px;vertical-align:0}
+.f .f.missing{margin:10px 0 0}
+
+/* the smallest test, across the bottom */
+.test{margin-top:16px;background:var(--card);border:1px solid var(--edge);border-radius:18px;padding:18px 20px 6px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.05)}
+.test .fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px;margin-top:8px}
+.test .f.missing{margin:8px 0 14px}
+
+/* Prep / Present switch, and the stakeholder picker in Present */
+[hidden]{display:none !important}
+.bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.seg{margin-left:auto;display:inline-flex;background:#ecebe7;border-radius:999px;padding:3px}
+.seg button,.who button{font:500 13.5px var(--sans);border:0;background:transparent;cursor:pointer;color:var(--mute)}
+.seg button{padding:6px 14px;border-radius:999px}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.who{display:flex;flex-wrap:wrap;gap:4px 20px}
+.who button{padding:6px 0;font-size:14.5px;border-bottom:2px solid transparent}
+.who button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* Present: one page for one stakeholder, read top to bottom: the proposal as
+   the headline, the numbers when there's data, then one full-width card per
+   section, each with its proof, and the ask in the site's dark card */
+.slide{margin:0 auto}
+.slide-t{font-family:var(--serif);font-weight:400;font-size:44px;line-height:1.12;letter-spacing:-.02em;text-wrap:balance;max-width:22em;
+  background-image:linear-gradient(180deg,#0b0b0c 0%,#5c5c5c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  padding-bottom:.16em;margin:4px 0 calc(24px - .16em)}
+.scard{background:var(--card);border:1px solid var(--edge);border-radius:16px;margin-bottom:12px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.04)}
+.scard{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;padding:22px 26px}
+.slabel{font-size:13.5px;color:var(--faint);padding-top:4px}
+.btext{font-size:19px;line-height:1.4;font-weight:500;letter-spacing:-.005em;color:var(--ink)}
+.pts{list-style:none;margin-top:10px;display:grid;gap:6px}
+.pts li{position:relative;padding-left:16px;font-size:15.5px;line-height:1.45;color:var(--body)}
+.pts li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--ghost)}
+.scard.dark{background:#0b0b0c;border-color:#0b0b0c}
+.scard.dark .slabel{color:#a1a4a5}
+.scard.dark .btext{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.25;letter-spacing:-.01em;color:#fff;text-wrap:balance}
+.scard.dark .pts li{color:#c9cbcc}
+.scard.dark .pts li::before{background:#6e7071}
+
+@media (max-width:900px){
+  .page{padding:28px 18px 36px}
+  h1{font-size:34px}
+  .tree{display:none}
+  .ask{max-width:none;margin-top:24px;margin-bottom:16px;text-align:left}
+  .grid{grid-template-columns:1fr}
+  .test .fields{grid-template-columns:1fr}
+  .slide-t{font-size:30px}
+  .scard{padding:18px}
+  .scard{grid-template-columns:1fr;gap:6px}
+  .slabel{padding-top:0}
+  .btext{font-size:17px}
+  .scard.dark .btext{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="page" id="page"></div>
+
+<!-- THE MAP'S DATA. After each answer, replace everything inside this block
+     and nothing else in the file. The fields are explained in SKILL.md,
+     "The buy-in map". This example is one moment of a sample case: replace
+     it with the user's own. -->
+<script type="application/json" id="map-data">
+{
+  "now": "Now: question 5 of 6, VP Engineering",
+  "summary": "<b>1 piece missing</b> so far, for the CFO.",
+  "ask": "A 4-week pilot for 6 of the 12 new team leads, about $9,000",
+  "people": [
+    { "name": "CFO", "role": "Signs off anything over $5,000", "status": "missing",
+      "priority": { "v": "Burn. Every team was asked for 10% cuts this quarter",
+        "proof": { "v": "Said so at the September all-hands" } },
+      "problem": { "v": "Training spend with no result to show for it",
+        "proof": { "v": "“We paid for a management course last year and I never saw a result.”", "quote": true } },
+      "solution": { "v": "Half the cost of a full programme, with the result agreed before it starts",
+        "proof": { "missing": "a result they would accept as proof", "why": "Without it, this sounds like last year's course again." } } },
+    { "name": "VP Engineering", "role": "Their leads give 1 afternoon a week", "status": "now",
+      "priority": { "v": "Shipping the Q1 roadmap on time",
+        "proof": { "v": "It's what they're measured on" } },
+      "problem": { "v": "New leads still code instead of delegating, so senior engineers get pulled in",
+        "proof": { "v": "“My new leads still code all day and don't delegate.”", "quote": true } },
+      "solution": { "now": true } },
+    { "name": "CHRO", "role": "Your manager, already supportive", "status": "idle" }
+  ],
+  "test": { "status": "idle" }
+}
+</script>
+<script>
+(function () {
+  var page = document.getElementById('page');
+  var M = window.MAP;
+  if (!M) {
+    try { M = JSON.parse(document.getElementById('map-data').textContent); }
+    catch (e) {
+      // a typo in the data block: say so on the page instead of showing nothing
+      page.innerHTML = '<h1>Buy-in map</h1><p class="summary">The map data has a typo, so the map can\'t draw. (' + String(e.message).replace(/</g, '&lt;') + ')</p>';
+      window.__ready = true;
+      return;
+    }
+  }
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  // remembers the viewer's mode and stakeholder; the page works the same without it
+  function store(k, v) {
+    try { if (v === undefined) return localStorage.getItem('buyin-map-' + k); localStorage.setItem('buyin-map-' + k, v); } catch (e) { return null; }
+  }
+
+  // Prep is the working map. Present shows one clean screen per stakeholder,
+  // for the meeting, once the coach has written their pitch.
+  var prep = el('div', 'prep');
+  var present = el('div', 'present');
+
+  var head = el('div', 'head');
+  var left = el('div');
+  left.appendChild(el('h1', null, 'Buy-in map'));
+  left.appendChild(el('p', 'summary'));
+  left.lastChild.innerHTML = M.summary || '';
+  head.appendChild(left);
+  if (M.now) {
+    var now = el('div', 'now');
+    // the orange dot means "in progress"; a finished map gets the tick
+    if (M.done) now.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--ok)"><path d="M3 8.5l3.2 3L13 4.5"/></svg>'; else now.appendChild(el('i'));
+    now.appendChild(document.createTextNode(M.now));
+    head.appendChild(now);
+  }
+  prep.appendChild(head);
+
+  var ask = el('div', 'ask');
+  ask.appendChild(el('span', 'label', 'The yes you need'));
+  ask.appendChild(el('div', 'ask-t', M.ask || ''));
+  prep.appendChild(ask);
+
+  var tree = el('div', 'tree');
+  tree.innerHTML = '<svg aria-hidden="true"><path></path></svg>';
+  prep.appendChild(tree);
+
+  var STATUS = {
+    missing: function (n) { return '<span class="dot"></span>' + n + ' missing'; },
+    now: function () { return '<span class="ring"></span>Now'; },
+    done: function () { return '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--ok)"><path d="M3 8.5l3.2 3L13 4.5"/></svg>' + 'Done'; },
+    ready: function () { return '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--ok)"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Ready to pitch'; },
+    next: function () { return 'Next'; },
+    idle: function () { return 'Not started'; }
+  };
+  // each stakeholder row: data key, label, its proof's label, the question that fills it
+  var ROWS = [
+    ['priority', 'Cares about', 'How you know', 3],
+    ['problem', 'The problem you\'d solve', 'Proof they feel it', 4],
+    ['solution', 'Their reason to say yes', 'Proof it works', 5]
+  ];
+
+  function field(label, f) {
+    var d = el('div', 'f ' + (f.missing ? 'missing' : f.now ? 'asking' : f.todo ? 'todo' : 'done'));
+    var box = f.missing ? el('div', 'gap') : d;
+    box.appendChild(el('span', 'label', label));
+    var v = el('div', 'v' + (f.quote ? ' q' : ''), f.missing || (f.now ? 'Being answered' : f.todo) || f.v);
+    box.appendChild(v);
+    if (f.missing && f.why) box.appendChild(el('span', 'why', f.why));
+    if (f.missing) d.appendChild(box);
+    return d;
+  }
+
+  // an answered row gets its proof underneath; a missing proof gets its own box
+  function row(r, f) {
+    if (!f) return field(r[1], { todo: 'Question ' + r[3] });
+    var d = field(r[1], f);
+    if (f.missing || f.now) return d;
+    var p = f.proof;
+    if (p && p.missing) { d.appendChild(field(r[2], p)); return d; }
+    var line = el('div', 'pf' + (!p ? ' todo' : p.now ? ' asking' : ''));
+    line.appendChild(el('span', 'pl', r[2] + ': '));
+    line.appendChild(el('span', p && p.quote ? 'q' : null, !p ? 'Not asked yet' : p.now ? 'Being answered' : p.v));
+    d.appendChild(line);
+    return d;
+  }
+  function missCount(p) {
+    return ROWS.filter(function (r) { var f = p[r[0]]; return f && (f.missing || (f.proof && f.proof.missing)); }).length;
+  }
+
+  var grid = el('div', 'grid');
+  (M.people || []).forEach(function (p) {
+    var c = el('div', 'sh');
+    var top = el('div', 'sh-top');
+    top.appendChild(el('span', 'name', p.name));
+    var st = el('span', 'st' + (p.status === 'idle' ? ' idle' : ''));
+    st.innerHTML = p.status === 'missing' ? STATUS.missing(missCount(p)) : STATUS[p.status]();
+    top.appendChild(st);
+    c.appendChild(top);
+    c.appendChild(el('span', 'role', p.role));
+    var fs = el('div', 'fields');
+    ROWS.forEach(function (r) { fs.appendChild(row(r, p[r[0]])); });
+    c.appendChild(fs);
+    grid.appendChild(c);
+  });
+  prep.appendChild(grid);
+
+  var t = M.test || {};
+  // the test card only appears once the conversation reaches question 6
+  if (t.status && t.status !== 'idle') {
+    var test = el('div', 'test');
+    var tt = el('div', 'sh-top');
+    tt.appendChild(el('span', 'name', 'The smallest test'));
+    var ts = el('span', 'st');
+    ts.innerHTML = STATUS[t.status](['who', 'asks', 'proof'].filter(function (k) { return t[k] && t[k].missing; }).length);
+    tt.appendChild(ts);
+    test.appendChild(tt);
+    var tf = el('div', 'fields');
+    [['who', 'Who is in it, for how long'], ['asks', 'What it asks of each person'], ['proof', 'The result that counts as proof']].forEach(function (x) {
+      tf.appendChild(field(x[1], t[x[0]] || { todo: 'Question 6' }));
+    });
+    test.appendChild(tf);
+    prep.appendChild(test);
+  }
+
+  // draw the branches once the cards have their final positions
+  function branches() {
+    var svg = tree.querySelector('svg'), path = tree.querySelector('path');
+    var tr = tree.getBoundingClientRect(), ar = ask.getBoundingClientRect();
+    var cards = grid.querySelectorAll('.sh');
+    if (!cards.length || getComputedStyle(tree).display === 'none') return;
+    var x0 = ar.left + ar.width / 2 - tr.left, mid = tr.height / 2, d = 'M' + x0 + ' 0 V' + mid;
+    var xs = Array.prototype.map.call(cards, function (c) { var r = c.getBoundingClientRect(); return r.left + r.width / 2 - tr.left; });
+    d += ' M' + xs[0] + ' ' + mid + ' H' + xs[xs.length - 1];
+    xs.forEach(function (x) { d += ' M' + x + ' ' + mid + ' V' + tr.height; });
+    path.setAttribute('d', d);
+  }
+  window.addEventListener('resize', branches);
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(branches);
+
+  var pitched = (M.people || []).filter(function (p) { return p.pitch; });
+  var CARDS = [['focus', "What you're focused on"], ['problem', "What's getting in the way"], ['fix', 'How this helps'], ['ask', "What we're asking"]];
+  function slide(p) {
+    var P = p.pitch, s = el('div', 'slide');
+    // the headline is the proposal itself, unless the coach wrote a plainer one
+    s.appendChild(el('h2', 'slide-t', P.title || M.ask || ''));
+    CARDS.forEach(function (c) {
+      var x = P[c[0]];
+      if (!x) return;
+      var d = el('div', 'scard' + (c[0] === 'ask' ? ' dark' : ''));
+      d.appendChild(el('span', 'slabel', c[1]));
+      var body = el('div');
+      body.appendChild(el('div', 'btext', x.text));
+      if (x.points && x.points.length) {
+        var ul = el('ul', 'pts');
+        x.points.forEach(function (t) { ul.appendChild(el('li', null, t)); });
+        body.appendChild(ul);
+      }
+      d.appendChild(body);
+      s.appendChild(d);
+    });
+    return s;
+  }
+  if (pitched.length) {
+    var mode = store('mode') === 'present' ? 'present' : 'prep';
+    var pick = Math.max(0, pitched.map(function (p) { return p.name; }).indexOf(store('who')));
+    var bar = el('div', 'bar');
+    var who = el('div', 'who');
+    var seg = el('div', 'seg');
+    function button(parent, text, onclick) { var b = el('button', null, text); b.type = 'button'; b.onclick = onclick; parent.appendChild(b); return b; }
+    var whoBtns = pitched.map(function (p, i) { return button(who, p.name, function () { pick = i; store('who', p.name); show(); }); });
+    var segBtns = ['prep', 'present'].map(function (m) { return button(seg, m === 'prep' ? 'Prep' : 'Present', function () { mode = m; store('mode', m); show(); }); });
+    bar.appendChild(who);
+    bar.appendChild(seg);
+    page.appendChild(bar);
+    var show = function () {
+      prep.hidden = mode !== 'prep';
+      present.hidden = who.hidden = mode !== 'present';
+      segBtns.forEach(function (b, i) { b.setAttribute('aria-pressed', String((i === 1) === (mode === 'present'))); });
+      whoBtns.forEach(function (b, i) { b.setAttribute('aria-pressed', String(i === pick)); });
+      present.innerHTML = '';
+      present.appendChild(slide(pitched[pick]));
+      if (mode === 'prep') branches();
+    };
+    page.appendChild(prep);
+    page.appendChild(present);
+    show();
+  } else {
+    page.appendChild(prep);
+    branches();
+  }
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>
