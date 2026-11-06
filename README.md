@@ -4,7 +4,7 @@ A collection of skills that coach you through the toughest challenges of leaders
 
 They'll help you with getting buy-in, solving complex problems, giving feedback, delegating and more.
 
-Compiled from my experience building [Creo](https://joincreo.com) and coaching executives from the University of California, Coursera, Vinted and others.
+Compiled from my experience building [Creo](https://www.joincreo.com/?utm_source=github&utm_medium=referral&utm_campaign=manager-skills&utm_content=intro) and coaching executives from the University of California, Coursera, Vinted and others.
 
 ## Why use them?
 
@@ -50,4 +50,4 @@ Start a new chat and say what you need buy-in for, for example: "I want to get a
 
 ## Looking for help developing new leaders?
 
-Our virtual gyms at [Creo](https://joincreo.com) help ICs adopt manager habits in as little as 8 hours.
+Our virtual gyms at [Creo](https://www.joincreo.com/?utm_source=github&utm_medium=referral&utm_campaign=manager-skills&utm_content=footer-cta) help ICs adopt manager habits in as little as 8 hours.
