@@ -50,4 +50,4 @@ Start a new chat and say what you need buy-in for, for example: "I want to get a
 
 ## Looking for help developing new leaders?
 
-Our virtual gyms at [Creo](https://joincreo.com) help ICs at fast-growing companies adopt manager habits in as little as 8 hours.
+Our virtual gyms at [Creo](https://joincreo.com) help ICs adopt manager habits in as little as 8 hours.
