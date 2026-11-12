@@ -51,6 +51,8 @@ Start a new chat and say what you need buy-in for, for example: "I want to get a
 
 ### progress-next-steps
 
+![Setting up weekly updates for a manager, then the first update: reading the sources and drafting the email](assets/progress-next-steps.gif)
+
 Use it when your manager, a client or anyone else expects regular updates from you. Setup takes 3 questions:
 
 1. Who do you want to give updates to, and who are they to you?
