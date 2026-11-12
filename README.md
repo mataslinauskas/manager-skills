@@ -53,7 +53,7 @@ Start a new chat and say what you need buy-in for, for example: "I want to get a
 
 ![Setting up weekly updates for a manager, then the first update: reading the sources and drafting the email](assets/progress-next-steps.gif)
 
-Use it when your manager, a client or anyone else expects regular updates from you. Setup takes 3 questions:
+Share it with your team to make it easy for them to update you, or use it yourself when your manager, a client or anyone else expects regular updates from you. Setup takes 3 questions:
 
 1. Who do you want to give updates to, and who are they to you?
 2. What do they want to know from you?
