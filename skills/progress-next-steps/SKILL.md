@@ -13,7 +13,15 @@ The work has 2 parts:
 - Ask the 3 setup questions below one at a time, worded as written, and wait for each answer
 - No compliments, no repeating their answer back to them, and no probing an answer that is already enough
 - Follow up only when an answer is too vague to write an update from, with the one plain question each setup question names
-- Take one person at a time. When their 3 answers are in, choose the sources to read for them: the AI conversations and connected channels where the work they want to know about happens. Save it all (see "Where it lives") and set up their schedule (see "The schedule"), then confirm the setup and the sources in one message: "Saved for Dana: the Q3 launch date and anything that risks it, every Friday, by email. These are the sources I'll check for her updates: Slack #launch, Jira, your email and calendar, and your past chats with me. Anything to add or change?"
+- Take one person at a time. When their 3 answers are in, choose the sources to read for them: the AI conversations and connected channels where the work they want to know about happens. Save it all (see "Where it lives") and set up their schedule (see "The schedule"), then confirm the setup, the sources and how the runs work in one message, saying each thing once and not repeating it in a separate summary:
+
+  "I saved Dana's setup: the Q3 launch date and anything that risks it, by email every Friday at 9:00, starting this week. The record is in progress-updates.md.
+
+  Each run reads Slack #launch, Jira, your email and calendar, and your past chats with me, without changing anything there. It lists what you got done and waits for your next steps before drafting the update.
+
+  It only runs while the app is open. If the app is closed at 9:00, it runs the next time you open it.
+
+  Anything to add or change?"
 - If they change anything, update their record and their schedule
 - Then ask once: "Anyone else you want to update?" If yes, start again at question 1 for that person
 
