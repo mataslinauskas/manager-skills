@@ -22,8 +22,8 @@ npx skills add mataslinauskas/manager-skills -g
 
 ## Skills
 
-- **[buy-in-prep](#buy-in-prep)** - A coach that asks you 6 questions, then shows who you're ready to pitch and what's missing.
-- **[progress-next-steps](#progress-next-steps)** - Asks who you update and what they want to know, then drafts each update from what you got done.
+- **[buy-in-prep](#buy-in-prep)** - To prepare for getting buy-in, one person at a time.
+- **[progress-next-steps](#progress-next-steps)** - To make updates easy, whether your team is updating you or you're updating others.
 - **problem-solving** - Coming soon.
 - **feedback-prep** - Coming soon.
 - **delegation-prep** - Coming soon.
