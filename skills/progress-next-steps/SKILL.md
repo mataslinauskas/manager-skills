@@ -89,7 +89,7 @@ After the user confirms it went out, note the date in "Where it lives" as this p
 
 ## Where it lives
 
-Keep one record per person so every scheduled run starts from the right place: their name, who they are to the user, what they want to know, how often and where, which sources to read, their Format (the default format until the user changes it) with its Format adjustments (one dated line per change), and the date of their last update.
+Keep one record per person so every scheduled run starts from the right place: their name, who they are to the user, what they want to know, how often and where, which sources to read with how to reach each one (a file path, a channel name, and what to use instead when a source can't be reached), their Format (the default format until the user changes it) with its Format adjustments (one dated line per change), and the date of their last update.
 
 If you can save files, keep it in `progress-updates.md` in the working folder, one section per person, and tell the user once where it is, in one sentence. If you can't save files but your app has memory, keep it there. If you have neither, give the user the record at the end of setup and ask them to paste it in when they start the next update.
 
@@ -98,7 +98,7 @@ If you can save files, keep it in `progress-updates.md` in the working folder, o
 ## The schedule
 
 When a person's setup is done, set up their rhythm from question 3:
-- If your app can run scheduled or recurring tasks, create one per person that runs this skill's update for them at their rhythm, and tell the user what you set up in one sentence.
+- If your app can run scheduled or recurring tasks, create one per person that runs this skill's update for them at their rhythm, and tell the user what you set up in one sentence. Keep the task's instructions to one line: run this skill's update for <name>. Their format, sources and everything else stay in their record, so a change there is the only change needed; never copy any of it into the task.
 - If it can't, tell the user on which day to start a chat and say "progress update for <name>".
 
 A scheduled run may start while the user isn't there to answer. Then do steps 4 and 5 as usual and save the draft in the person's record with "Status: draft ready, not sent". End the run with the same message you'd show the user in a live chat: the draft itself, ready to copy, the short lines under it, and the question "Any next steps to include, or anything else to add or change before you send it?" That message is what they see when they open the run, so never end on a report of what you read or saved. If your app can notify the user, also tell them the update is ready to check and send.
