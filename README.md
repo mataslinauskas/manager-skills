@@ -24,6 +24,7 @@ npx skills add mataslinauskas/manager-skills -g
 
 - **[buy-in-prep](#buy-in-prep)** - To prepare for getting buy-in, one person at a time.
 - **[progress-next-steps](#progress-next-steps)** - To make updates easy, whether your team is updating you or you're updating others.
+- **[expert](#expert)** - To create an expert for any task, the moment you need one.
 - **problem-solving** - Coming soon.
 - **feedback-prep** - Coming soon.
 - **delegation-prep** - Coming soon.
@@ -66,6 +67,22 @@ On each update, it reads what happened since the last one and drafts the update 
 It never sends anything. You check the draft and send it yourself.
 
 Start a new chat and say who you want to keep up to date, for example: "I want to send my manager a weekly update." It takes it from there.
+
+### expert
+
+![Building a skill from a role and a task: the finished skill and all 10 of its questions](assets/expert.gif)
+
+Use it to create an expert for anything you're working on, the moment you need one. Give it one of these:
+
+- A persona and a task, for example "Alex Hormozi preparing a sales offer"
+- A role and a task, for example "an AI adoption expert helping a person adopt AI"
+- Content to extract from: an article, transcript, thread or framework
+
+It writes a skill with 5-12 questions that expert would work through, most important first. Each question says what a good answer looks like. It saves the skill and shows you every question, so you can change any of them.
+
+To use the new skill, type its name followed by whatever you need help with, for example: "/ai-adoption-coach Rasa, our office manager, spends every Monday copying invoices into a spreadsheet."
+
+Start a new chat and type /expert. It takes it from there.
 
 ## Looking for help developing new leaders?
 
