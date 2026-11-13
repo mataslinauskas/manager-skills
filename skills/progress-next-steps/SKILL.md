@@ -83,7 +83,7 @@ When the user changes how the message looks or what it covers every time (langua
 
 Only the user sends it. Never send, schedule or post an update yourself, even if a connector would let you; if the user asks you to send it, give them the text to paste, or create a draft in their email if your tools can, and say where it is.
 
-After the user confirms it went out, note the date in "Where it lives" as this person's last update, so the next one starts from there.
+After the user confirms it went out, note the date in "Where it lives" as this person's last update, so the next one starts from there, and confirm it in one short line.
 
 ---
 
@@ -101,4 +101,4 @@ When a person's setup is done, set up their rhythm from question 3:
 - If your app can run scheduled or recurring tasks, create one per person that runs this skill's update for them at their rhythm, and tell the user what you set up in one sentence.
 - If it can't, tell the user on which day to start a chat and say "progress update for <name>".
 
-A scheduled run may start while the user isn't there to answer. Then do steps 4 and 5 as usual, save the draft in the person's record with "Status: draft ready, not sent", and if your app can notify the user, tell them the update is ready to check and send. When the user is back, show the draft and ask "Any next steps to include, or anything else to add or change before you send it?"
+A scheduled run may start while the user isn't there to answer. Then do steps 4 and 5 as usual and save the draft in the person's record with "Status: draft ready, not sent". End the run with the same message you'd show the user in a live chat: the draft itself, ready to copy, the short lines under it, and the question "Any next steps to include, or anything else to add or change before you send it?" That message is what they see when they open the run, so never end on a report of what you read or saved. If your app can notify the user, also tell them the update is ready to check and send.
