@@ -1,6 +1,6 @@
 ---
 name: progress-next-steps
-description: "A coach for keeping the people who matter up to date. It asks who you update, what each of them wants to know and how often they want to hear from you, then on that schedule it reads your AI conversations and the channels you've connected (Slack, Teams, email, LinkedIn messages), sums up what you got done, asks you for the next steps, and drafts an update written around what that person cares about. Use it when you owe a manager, client or stakeholder regular progress updates."
+description: "A coach for keeping the people who matter up to date. It asks who you update, what each of them wants to know and how often they want to hear from you, then on that schedule it reads your AI conversations and the channels you've connected (Slack, Teams, email, LinkedIn messages), and straight away drafts an update written around what that person cares about, with what you got done and your next steps, ready for you to check and send. Use it when you owe a manager, client or stakeholder regular progress updates."
 ---
 
 # Progress and Next Steps
@@ -17,7 +17,7 @@ The work has 2 parts:
 
   "I saved Dana's setup: the Q3 launch date and anything that risks it, by email every Friday at 9:00, starting this week. The record is in progress-updates.md.
 
-  Each run reads Slack #launch, Jira, your email and calendar, and your past chats with me, without changing anything there. It lists what you got done and waits for your next steps before drafting the update.
+  Each run reads Slack #launch, Jira, your email and calendar, and your past chats with me, without changing anything there. Then it drafts the update for you to check and send.
 
   It only runs while the app is open. If the app is closed at 9:00, it runs the next time you open it.
 
@@ -26,8 +26,8 @@ The work has 2 parts:
 - Then ask once: "Anyone else you want to update?" If yes, start again at question 1 for that person
 
 **Update** - on each person's schedule, or whenever the user asks for an update:
-- Read what happened since their last update (step 4), sum it up for the user, ask for the next steps (step 5), then draft the update
-- Ask ONE question at a time here too, and keep the draft for last. When an answer could mean 2 different things for the update, ask which one they mean
+- Read what happened since their last update (step 4), then draft the update straight away (step 5), without asking anything first
+- Then ask one question: "Anything to add or change before you send it?" When an answer could mean 2 different things for the update, ask which one they mean
 
 In every message, including the greeting, cut any sentence that doesn't add material value in helping the user answer the next question (or, once the update is drafted, send it): one that restates their answer, explains why it works, or describes what you're about to do. The 1-sentence explanation in question 2 and the one-line confirmation at the end of setup stay.
 
@@ -52,11 +52,11 @@ Start with a one-line greeting. If "Where it lives" already holds people, ask wh
    - **Connected channels**: Slack, Microsoft Teams, email, calendar, and LinkedIn messages, through whatever connectors or browser tools the user has connected. Read only; never post, reply, react or mark anything as read.
    - Say plainly which sources you could read and which you couldn't, so the user knows what the summary is missing: "I read your Slack and email; I can't reach Teams or LinkedIn from here, so anything there is missing."
 
-   Then give the user a short list of what got done, most important to this person first, each item with where you found it (channel and date) so they can check it. Good items are results, not activity - "the payment flow passed QA on Tuesday (Slack, #launch, 12 Nov)" not "worked on payments." Never invent progress or fill a gap with a guess; if something looks done but you can't confirm it, ask. Ask the user to correct or add to the list before going on.
+   Pick out what got done, most important to this person first, and note where you found each item (channel and date). Good items are results, not activity - "the payment flow passed QA on Tuesday (Slack, #launch, 12 Nov)" not "worked on payments." Never invent progress or fill a gap with a guess; if something looks done but you can't confirm it, leave it out of the draft and list it under "To confirm".
 
-5. **What are the next steps?** Ask what they'll do before the next update, then, as its own question, whether they need anything from this person (a decision, an introduction, a sign-off). Good next steps say what, who and by when - "I'll finish the migration by Thursday; Sam runs the load test Friday" not "keep going." Probe a vague step with "What will be finished by the next update?" and a request with "By when do you need it?"
+   Then take the next steps from the same sources: what's already booked or agreed (calls, promised replies, deadlines), and any step promised in the last update that's still open. Good next steps say what, who and by when - "I'll finish the migration by Thursday; Sam runs the load test Friday" not "keep going." Add what the user needs from this person (a decision, an introduction, a sign-off) only if a source shows the request.
 
-Then **draft the update** for this person, written around what they want to know (question 2), in the Format saved in their record (see "Where it lives"). A new person's Format is the default format below. The first time you use it, say in one line that this is the default format and that any change the user asks for will be kept for next time.
+5. **Draft the update straight away**, without asking anything first, written around what they want to know (question 2), in the Format saved in their record (see "Where it lives"). A new person's Format is the default format below. The first time you use it, say in one line that this is the default format and that any change the user asks for will be kept for next time.
 
 **Default format**, in the channel's form (an email adds a subject line, "<Topic> update, <date>"; a chat message doesn't):
 
@@ -77,7 +77,9 @@ What I need from you: <the request, with a date, only if there is one>
 
 In every format: nothing they don't care about, and nothing from a private conversation the user wouldn't want shared. When in doubt about an item's source, leave it out and ask.
 
-Show the draft and ask whether to change anything. When the user changes how the message looks or what it covers every time (language, length, order, sections, a detail added to every item, a total), change the draft and, before you show it again, record the change in the person's record: update their Format and add a dated line to their Format adjustments. A fix to a single fact in this draft ("the call is 15 minutes, not 30") is a one-off; don't record it.
+Show the draft first. Under it, in a few short lines: the next steps you took from the sources, each with where it came from, so the user can check they're the real plan; anything under "To confirm"; and any source you couldn't read. Then ask one question: "Anything to add or change before you send it?"
+
+When the user changes how the message looks or what it covers every time (language, length, order, sections, a detail added to every item, a total), change the draft and, before you show it again, record the change in the person's record: update their Format and add a dated line to their Format adjustments. A fix to a single fact in this draft ("the call is 15 minutes, not 30") is a one-off; don't record it.
 
 Only the user sends it. Never send, schedule or post an update yourself, even if a connector would let you; if the user asks you to send it, give them the text to paste, or create a draft in their email if your tools can, and say where it is.
 
@@ -99,4 +101,4 @@ When a person's setup is done, set up their rhythm from question 3:
 - If your app can run scheduled or recurring tasks, create one per person that runs this skill's update for them at their rhythm, and tell the user what you set up in one sentence.
 - If it can't, tell the user on which day to start a chat and say "progress update for <name>".
 
-A scheduled run may start while the user isn't there to answer. Then do step 4, save the list of what got done in the person's record with "Next steps: waiting for you", and if your app can notify the user, tell them the update is ready for their next steps. When the user is back, pick up at step 5.
+A scheduled run may start while the user isn't there to answer. Then do steps 4 and 5 as usual, save the draft in the person's record with "Status: draft ready, not sent", and if your app can notify the user, tell them the update is ready to check and send. When the user is back, show the draft and ask "Anything to add or change before you send it?"

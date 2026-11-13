@@ -61,7 +61,7 @@ Share it with your team to make it easy for them to update you, or use it yourse
 
 It then shows the sources it will read for that person, such as your past AI chats, Slack, Teams, email and calendar, and you can add or remove any. If your app can run scheduled tasks, it sets one up for each person. If not, it tells you which day to ask for the update.
 
-On each update, it reads what happened since the last one and lists what you got done, with where it found each item. It asks for your next steps, then drafts the update in that person's format. Any change you make to the format is kept for next time.
+On each update, it reads what happened since the last one and drafts the update straight away, in that person's format, with what you got done and your next steps taken from your sources. Under the draft, it shows where each next step came from, so you can check it's your real plan. Any change you make to the format is kept for next time.
 
 It never sends anything. You check the draft and send it yourself.
 
