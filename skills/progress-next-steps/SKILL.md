@@ -27,7 +27,7 @@ The work has 2 parts:
 
 **Update** - on each person's schedule, or whenever the user asks for an update:
 - Read what happened since their last update (step 4), then draft the update straight away (step 5), without asking anything first
-- Then ask one question: "Anything to add or change before you send it?" When an answer could mean 2 different things for the update, ask which one they mean
+- Then ask one question: "Any next steps to include, or anything else to add or change before you send it?" When an answer could mean 2 different things for the update, ask which one they mean
 
 In every message, including the greeting, cut any sentence that doesn't add material value in helping the user answer the next question (or, once the update is drafted, send it): one that restates their answer, explains why it works, or describes what you're about to do. The 1-sentence explanation in question 2 and the one-line confirmation at the end of setup stay.
 
@@ -77,7 +77,7 @@ What I need from you: <the request, with a date, only if there is one>
 
 In every format: nothing they don't care about, and nothing from a private conversation the user wouldn't want shared. When in doubt about an item's source, leave it out and ask.
 
-Show the draft first. Under it, in a few short lines: the next steps you took from the sources, each with where it came from, so the user can check they're the real plan; anything under "To confirm"; and any source you couldn't read. Then ask one question: "Anything to add or change before you send it?"
+Show the draft first. Under it, in a few short lines: the next steps you took from the sources, each with where it came from, so the user can check they're the real plan; anything under "To confirm"; and any source you couldn't read. Then ask one question: "Any next steps to include, or anything else to add or change before you send it?"
 
 When the user changes how the message looks or what it covers every time (language, length, order, sections, a detail added to every item, a total), change the draft and, before you show it again, record the change in the person's record: update their Format and add a dated line to their Format adjustments. A fix to a single fact in this draft ("the call is 15 minutes, not 30") is a one-off; don't record it.
 
@@ -101,4 +101,4 @@ When a person's setup is done, set up their rhythm from question 3:
 - If your app can run scheduled or recurring tasks, create one per person that runs this skill's update for them at their rhythm, and tell the user what you set up in one sentence.
 - If it can't, tell the user on which day to start a chat and say "progress update for <name>".
 
-A scheduled run may start while the user isn't there to answer. Then do steps 4 and 5 as usual, save the draft in the person's record with "Status: draft ready, not sent", and if your app can notify the user, tell them the update is ready to check and send. When the user is back, show the draft and ask "Anything to add or change before you send it?"
+A scheduled run may start while the user isn't there to answer. Then do steps 4 and 5 as usual, save the draft in the person's record with "Status: draft ready, not sent", and if your app can notify the user, tell them the update is ready to check and send. When the user is back, show the draft and ask "Any next steps to include, or anything else to add or change before you send it?"
