@@ -26,7 +26,7 @@ npx skills add mataslinauskas/manager-skills -g
 - **[progress-next-steps](#progress-next-steps)** - To make updates easy, whether your team is updating you or you're updating others.
 - **[expert](#expert)** - To create an expert for any task, the moment you need one.
 - **problem-solving** - Coming soon.
-- **feedback-prep** - Coming soon.
+- **[feedback](#feedback)** - To prepare for a feedback conversation, then get your call scored, so you can improve over time.
 - **delegation-prep** - Coming soon.
 
 ## How each skill works
@@ -83,6 +83,27 @@ It writes a skill with 5-12 questions that expert would work through, most impor
 To use the new skill, type its name followed by whatever you need help with, for example: "/ai-adoption-coach Rasa, our office manager, spends every Monday copying invoices into a spreadsheet."
 
 Start a new chat and type /expert. It takes it from there.
+
+### feedback
+
+![Preparing feedback one question at a time, then the check after the call: each step scored, with what to say next time](assets/feedback.gif)
+
+Use it before you give someone feedback. The coach takes you through 6 questions:
+
+1. Who needs feedback right now, and on what specifically?
+2. How will you frame the conversation, so they're eager to hear it?
+3. Why will this change benefit them?
+4. Which specific examples will make the pattern clear?
+5. What does the improved version look like, and what should they focus on?
+6. How will you ask for their reaction, and what specific help will you offer?
+
+As you answer, it builds a **feedback map**: one card per step of the conversation, with the line to say and anything still missing. You can glance at it during the call.
+
+Then it offers to check in shortly after the call. If your app can run scheduled tasks, it finds the transcript in your notetaker, scores each step and sends you what to work on next, with the line you could say instead. If not, share the transcript after the call and it does the same.
+
+You can go step by step, or describe your situation and get the full plan in one go.
+
+Start a new chat and say who you need to give feedback to, for example: "I need to give one of my team members feedback on their reports." The coach takes it from there.
 
 ## Looking for help developing new leaders?
 

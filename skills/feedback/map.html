@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400&display=block" rel="stylesheet">
+<style>
+/* joincreo.com's look, light: the same fonts, greys and hairlines on an
+   off-white page, as in the buy-in map. One accent, the Claude orange, and it
+   only ever means "this needs you": a missing piece, or what to say next time.
+   Scores take the Creo deck's band colours and nothing else does. */
+:root{
+  --bg:#f7f7f5;
+  --card:#ffffff;
+  --ink:#0b0b0c;
+  --body:#2a2b2d;
+  --mute:#55575a;
+  --faint:#6e7071;
+  --ghost:#a3a5a7;
+  --edge:rgba(0,0,0,.09);
+  --hair:rgba(0,0,0,.07);
+  --claude:#D97757;
+  --ok:oklch(55% .12 150);
+  --band-r:oklch(62% .10 25);
+  --band-o:oklch(62% .10 62);
+  --band-y:oklch(72% .13 88);
+  --band-g:oklch(62% .10 145);
+  --serif:"Newsreader","Iowan Old Style",Georgia,serif;
+  --display:"Inter Tight","Inter",system-ui,sans-serif;
+  --sans:"Inter","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--body);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.page{max-width:1040px;margin:0 auto;padding:44px 40px 52px}
+
+/* header: the title lit from the top, where the prep is */
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+h1,.title{font-family:var(--serif);font-weight:400;letter-spacing:-.025em;
+  background-image:linear-gradient(180deg,#0b0b0c 0%,#5c5c5c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  padding-bottom:.16em;margin-bottom:-.16em}
+h1{font-size:44px;line-height:1.05}
+.now{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mute)}
+.now svg{width:14px;height:14px;color:var(--ok)}
+.summary{margin-top:10px;font-size:16px;color:var(--mute)}
+.summary b{font-weight:500;color:var(--ink)}
+
+.prep > .head{margin-bottom:32px}
+.label{display:block;font-size:12.5px;color:var(--faint);margin-bottom:4px}
+/* the feedback itself: the one card on a light grey fill */
+.card.fb{background:#f1f0ec;border-color:rgba(0,0,0,.05);box-shadow:none}
+
+/* one card per step, in the order they'll say them */
+.card{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;background:var(--card);border:1px solid var(--edge);
+  border-radius:16px;padding:20px 24px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.04)}
+.shead{position:relative;font-family:var(--display);font-weight:500;font-size:18px;line-height:1.3;letter-spacing:-.01em;color:var(--ink)}
+.sname{display:inline}
+/* the step's purpose, behind a small "?" after its name (on its last line when the name wraps): on hover, on focus, or on tap */
+.help{width:18px;height:18px;margin-left:7px;vertical-align:2px;border-radius:50%;border:1px solid rgba(0,0,0,.14);background:transparent;
+  color:var(--faint);font:500 11.5px/1 var(--sans);letter-spacing:0;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.help:hover,.help:focus-visible,.help[aria-expanded="true"]{color:var(--ink);border-color:rgba(0,0,0,.3);outline:none}
+.tip{position:absolute;left:0;top:calc(100% + 8px);z-index:5;width:max-content;max-width:min(280px, calc(100vw - 64px));
+  background:var(--card);border:1px solid var(--edge);border-radius:10px;padding:9px 12px;font:400 13.5px/1.45 var(--sans);letter-spacing:0;
+  color:var(--body);box-shadow:0 1px 2px rgba(0,0,0,.05),0 10px 28px rgba(0,0,0,.08)}
+.todo{font-size:15px;color:var(--ghost)}
+.asking{font-size:15px;font-weight:600;color:var(--ink)}
+.pts{list-style:none;margin-top:8px;display:grid;gap:5px}
+.pts li{font-size:14.5px;line-height:1.45;color:var(--mute)}
+.card > div > .gap{margin-top:10px}
+.card > div > .gap:first-child{margin-top:0}
+
+/* missing: asked, and they didn't have it. What it is, and how the other person hears the feedback without it */
+.gap{border:1px dashed rgba(217,119,87,.7);border-radius:12px;padding:10px 12px 11px;background:rgba(217,119,87,.04)}
+.gap .gv{font-size:15px;line-height:1.45;color:var(--ink)}
+.gap .gv b{font-weight:600}
+.why{display:block;font-size:13.5px;line-height:1.4;color:var(--mute);margin-top:4px}
+
+/* view switch, once there's a review: Call / Review */
+[hidden]{display:none !important}
+.bar{display:flex;justify-content:flex-end;margin-bottom:28px}
+.seg{display:inline-flex;background:#ecebe7;border-radius:999px;padding:3px}
+.seg button{font:500 13.5px var(--sans);border:0;background:transparent;cursor:pointer;color:var(--mute);padding:6px 14px;border-radius:999px}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+/* what to say at each step, big enough to read at a glance during the call */
+.title{font-size:40px;line-height:1.12;text-wrap:balance;max-width:22em;margin-top:4px;margin-bottom:calc(24px - .16em)}
+.say{font-size:18px;line-height:1.42;font-weight:500;letter-spacing:-.005em;color:var(--ink)}
+.say + .pts li{font-size:15px;color:var(--body)}
+
+/* Review: plain numbers in the deck's band colours */
+.score{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:28px}
+.big{font-family:var(--display);font-weight:500;font-size:56px;line-height:1;letter-spacing:-.03em}
+.score .of{font-size:14px;color:var(--faint)}
+.score .summary{margin-top:0;flex-basis:100%}
+.pct{font-family:var(--display);font-weight:500;font-size:24px;line-height:1;letter-spacing:-.02em;margin-top:12px}
+.mk{display:block;font-size:13px;color:var(--faint);margin-top:4px}
+.b-g{color:var(--band-g)} .b-y{color:var(--band-y)} .b-o{color:var(--band-o)} .b-r{color:var(--band-r)}
+.plan{font-size:14px;line-height:1.45;color:var(--faint);margin-bottom:12px}
+.plan .pl{color:var(--ghost)}
+.row + .row{border-top:1px solid var(--hair);margin-top:12px;padding-top:12px}
+.topic{display:block;font-size:13px;color:var(--faint);margin-bottom:4px}
+.line{display:grid;grid-template-columns:minmax(48px,max-content) minmax(0,1fr);gap:10px;font-size:15.5px;line-height:1.5;margin-bottom:4px}
+.line .t{font-size:13px;color:var(--ghost);padding-top:3px;font-variant-numeric:tabular-nums}
+.line .q{font-style:italic;color:var(--body)}
+.rwhy{font-size:14px;line-height:1.45;color:var(--mute);margin-top:6px}
+.none{font-size:15px;color:var(--ghost)}
+.next{margin-top:14px}
+
+@media (max-width:760px){
+  .page{padding:28px 16px 36px}
+  h1{font-size:34px}
+  .prep > .head{margin-bottom:20px}
+  .card{grid-template-columns:1fr;gap:8px;padding:18px}
+  .title{font-size:30px}
+  .say{font-size:17px}
+  .big{font-size:44px}
+  .pct{display:inline-block;margin:6px 8px 0 0}
+  .mk{display:inline}
+  .line{grid-template-columns:minmax(42px,max-content) minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="page" id="page"></div>
+
+<!-- THE MAP'S DATA. After each answer, replace everything inside this block
+     and nothing else in the file. The fields are explained in SKILL.md,
+     "The feedback map". This example is one moment of a sample case: replace
+     it with the user's own. -->
+<script type="application/json" id="map-data">
+{
+  "now": "Now: question 4 of 6",
+  "summary": "<b>1 piece missing</b> so far: how the change helps her growth.",
+  "feedback": { "say": "Sara, your last 3 market entry analyses each used a different structure." },
+  "steps": {
+    "frame": { "say": "Sara, I'm giving you these comments because I have very high expectations and I know you can reach them." },
+    "rationale": { "say": "When your analyses are consistent, sales trusts them and decides faster.",
+      "gaps": [{ "missing": "how it helps her growth", "why": "She'll hear it as the team's problem, not hers." }] },
+    "gap": { "now": true }
+  }
+}
+</script>
+<script>
+(function () {
+  var page = document.getElementById('page');
+  var M = window.MAP;
+  if (!M) {
+    try { M = JSON.parse(document.getElementById('map-data').textContent); }
+    catch (e) {
+      // a typo in the data block: say so on the page instead of showing nothing
+      page.innerHTML = '<h1>Feedback map</h1><p class="summary">The map data has a typo, so the map can\'t draw. (' + String(e.message).replace(/</g, '&lt;') + ')</p>';
+      window.__ready = true;
+      return;
+    }
+  }
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  // remembers the viewer's view; the page works the same without it
+  function store(k, v) {
+    try { if (v === undefined) return localStorage.getItem('feedback-map-' + k); localStorage.setItem('feedback-map-' + k, v); } catch (e) { return null; }
+  }
+  var TICK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+
+  // the 5 steps: data key, name, the story they come away with, the question that fills it, top mark
+  var STEPS = [
+    ['frame', 'Frame it', 'They have my best interest in mind.', 2, 2],
+    ['rationale', 'Give the rationale', 'This will be useful for me.', 3, 3],
+    ['gap', 'Show the gap', 'It’s clear I don’t do this yet.', 4, 3],
+    ['how', 'Show how', 'It’s clear how to do it.', 5, 3],
+    ['close', 'Ask for input and offer support', 'I have the support I need.', 6, 3]
+  ];
+  var S = M.steps || {};
+
+  function gaps(list) {
+    return (list || []).map(function (g) {
+      var box = el('div', 'gap');
+      var v = el('div', 'gv');
+      v.innerHTML = '<b>Missing:</b> ';
+      v.appendChild(document.createTextNode(g.missing));
+      box.appendChild(v);
+      if (g.why) box.appendChild(el('span', 'why', g.why));
+      return box;
+    });
+  }
+  function points(list, cls) {
+    var ul = el('ul', 'pts' + (cls ? ' ' + cls : ''));
+    (list || []).forEach(function (t) { ul.appendChild(el('li', null, t)); });
+    return ul;
+  }
+  // the step's name, with a "?" that shows what this step makes the other person think
+  var openTip = null;
+  function closeTip() { if (openTip) { openTip.tip.hidden = true; openTip.btn.setAttribute('aria-expanded', 'false'); openTip = null; } }
+  document.addEventListener('click', closeTip);
+  function stepHead(s, extra) {
+    var left = el('div');
+    var h = el('div', 'shead');
+    h.appendChild(el('div', 'sname', s[1]));
+    var btn = el('button', 'help', '?');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Why this step');
+    btn.setAttribute('aria-expanded', 'false');
+    var tip = el('div', 'tip', 'They come away thinking: “' + s[2] + '”');
+    tip.setAttribute('role', 'tooltip');
+    tip.hidden = true;
+    var openedAt = 0;
+    var show = function () {
+      if (openTip && openTip.tip !== tip) closeTip();
+      if (tip.hidden) openedAt = Date.now();
+      tip.hidden = false; btn.setAttribute('aria-expanded', 'true'); openTip = { tip: tip, btn: btn };
+    };
+    btn.addEventListener('mouseenter', show);
+    btn.addEventListener('focus', show);
+    btn.addEventListener('mouseleave', closeTip);
+    btn.addEventListener('blur', closeTip);
+    // a tap opens it (a tap also fires focus, so a click right after opening keeps it open);
+    // a second tap or a tap anywhere else closes it
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (tip.hidden) show(); else if (Date.now() - openedAt > 400) closeTip();
+    });
+    h.appendChild(btn);
+    h.appendChild(tip);
+    left.appendChild(h);
+    if (extra) extra(left);
+    return left;
+  }
+
+  // ---- The map: what to say at each step, filling in as they answer, for a glance during the call ----
+  var prep = el('div', 'prep');
+  var head = el('div', 'head');
+  var hl = el('div');
+  hl.appendChild(el('h1', null, 'Feedback map'));
+  var sum = el('p', 'summary');
+  sum.innerHTML = M.summary || '';
+  hl.appendChild(sum);
+  head.appendChild(hl);
+  if (M.now) {
+    var now = el('div', 'now');
+    if (M.done) now.innerHTML = TICK;
+    now.appendChild(document.createTextNode(M.now));
+    head.appendChild(now);
+  }
+  prep.appendChild(head);
+
+  var F = M.feedback;
+
+  // the cards in the order they're said: the frame, the feedback itself (question 1, not scored), then the other 4 steps
+  var FEEDBACK = ['feedback', 'The feedback', 'I know exactly what to change.', 1];
+  var ORDER = [STEPS[0], FEEDBACK].concat(STEPS.slice(1));
+  ORDER.forEach(function (s) {
+    var d = s === FEEDBACK ? F : S[s[0]];
+    var c = el('div', 'card' + (s === FEEDBACK ? ' fb' : ''));
+    c.appendChild(stepHead(s));
+    var body = el('div');
+    if (!d) body.appendChild(el('div', 'todo', 'Question ' + s[3]));
+    else if (d.now) body.appendChild(el('div', 'asking', 'Being answered'));
+    else {
+      if (d.say) body.appendChild(el('div', 'say', d.say));
+      if (d.points && d.points.length) body.appendChild(points(d.points));
+      gaps(d.gaps).forEach(function (g) { body.appendChild(g); });
+    }
+    c.appendChild(body);
+    prep.appendChild(c);
+  });
+
+  // ---- Review: the call graded step by step, scored the way Creo scores a session ----
+  var review = el('div', 'review');
+  var R = M.review;
+  var band = function (pct) { return pct >= 70 ? 'g' : pct >= 63 ? 'y' : pct >= 40 ? 'o' : 'r'; };
+  if (R) {
+    var RS = R.steps || {}, sumMean = 0, sumMax = 0;
+    var means = STEPS.map(function (s) {
+      var rows = (RS[s[0]] && RS[s[0]].rows) || [];
+      var mean = rows.length ? rows.reduce(function (a, r) { return a + (Number(r.mark) || 0); }, 0) / rows.length : 0;
+      sumMean += mean; sumMax += s[4];
+      return mean;
+    });
+    var overall = Math.round(sumMean / sumMax * 100);
+    review.appendChild(el('h2', 'title', R.title || 'Your feedback call'));
+    var sc = el('div', 'score');
+    sc.appendChild(el('span', 'big b-' + band(overall), overall + '%'));
+    sc.appendChild(el('span', 'of', 'Overall, goal 70%'));
+    if (R.summary) { var rs = el('p', 'summary'); rs.innerHTML = R.summary; sc.appendChild(rs); }
+    review.appendChild(sc);
+
+    STEPS.forEach(function (s, i) {
+      var x = RS[s[0]] || {}, rows = x.rows || [], mean = means[i];
+      var pct = Math.round(mean / s[4] * 100);
+      var c = el('div', 'card');
+      c.appendChild(stepHead(s, function (left) {
+        left.appendChild(el('div', 'pct b-' + band(pct), pct + '%'));
+        var m = Math.round(mean * 10) / 10;
+        left.appendChild(el('span', 'mk', 'Mark ' + m + ' of ' + s[4]));
+      }));
+      var body = el('div');
+      var planned = S[s[0]];
+      if (planned && planned.say) {
+        var p = el('div', 'plan');
+        p.appendChild(el('span', 'pl', 'You planned: '));
+        p.appendChild(document.createTextNode(planned.say));
+        body.appendChild(p);
+      }
+      var said = rows.filter(function (r) { return r.lines && r.lines.length; });
+      if (!said.length) body.appendChild(el('div', 'none', 'Not said in the call.'));
+      else rows.forEach(function (r) {
+        if (!(r.lines && r.lines.length) && !r.topic) return;
+        var w = el('div', 'row');
+        if (r.topic) w.appendChild(el('span', 'topic', r.topic + (rows.length > 1 ? ', mark ' + r.mark : '')));
+        (r.lines || []).forEach(function (l) {
+          var ln = el('div', 'line');
+          ln.appendChild(el('span', 't', l.t || ''));
+          ln.appendChild(el('span', 'q', '“' + l.q + '”'));
+          w.appendChild(ln);
+        });
+        if (r.why && r.lines && r.lines.length) w.appendChild(el('div', 'rwhy', r.why));
+        else if (r.topic) w.appendChild(el('div', 'none', 'Not said for this one.'));
+        body.appendChild(w);
+      });
+      if (x.next) {
+        var n = el('div', 'gap next');
+        n.appendChild(el('span', 'label', 'Next time'));
+        n.appendChild(el('div', 'gv', x.next));
+        body.appendChild(n);
+      }
+      c.appendChild(body);
+      review.appendChild(c);
+    });
+  }
+
+  // ---- which views exist, and which one to show ----
+  var VIEWS = [];
+  VIEWS.push(['call', 'Call', prep]);
+  if (R) VIEWS.push(['review', 'Review', review]);
+  var names = VIEWS.map(function (v) { return v[0]; });
+  // a view that just appeared opens first; after that, the viewer's last pick
+  var mode = store('views') === names.join() && names.indexOf(store('mode')) !== -1 ? store('mode') : names[names.length - 1];
+  store('views', names.join());
+
+  if (VIEWS.length > 1) {
+    var bar = el('div', 'bar'), seg = el('div', 'seg');
+    var btns = VIEWS.map(function (v) {
+      var b = el('button', null, v[1]); b.type = 'button';
+      b.onclick = function () { mode = v[0]; store('mode', mode); show(); };
+      seg.appendChild(b);
+      return b;
+    });
+    bar.appendChild(seg);
+    page.appendChild(bar);
+  }
+  VIEWS.forEach(function (v) { page.appendChild(v[2]); });
+  function show() {
+    VIEWS.forEach(function (v, i) {
+      v[2].hidden = v[0] !== mode;
+      if (btns) btns[i].setAttribute('aria-pressed', String(v[0] === mode));
+    });
+  }
+  show();
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>
